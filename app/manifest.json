@@ -1,0 +1,112 @@
+{
+    "display_information": {
+        "name": "Message and Reaction Stuff",
+        "description": "Send block kit messages and react with anything",
+        "background_color": "#5940ff"
+    },
+    "features": {
+        "app_home": {
+            "home_tab_enabled": false,
+            "messages_tab_enabled": true,
+            "messages_tab_read_only_enabled": false
+        },
+        "bot_user": {
+            "display_name": "Message and Reaction Stuff",
+            "always_online": false
+        },
+        "shortcuts": [
+            {
+                "name": "Copy Block Kit",
+                "type": "message",
+                "callback_id": "copy_blockkit",
+                "description": "Copies the message block kit data"
+            },
+            {
+                "name": "React with Anything",
+                "type": "message",
+                "callback_id": "react_any",
+                "description": "React with an arbitrary emoji name"
+            },
+            {
+                "name": "Copy and Forward",
+                "type": "message",
+                "callback_id": "copy_forward",
+                "description": "Copies the content of a message and forwards it somewhere else"
+            },
+            {
+                "name": "Copy Timestamp",
+                "type": "message",
+                "callback_id": "copy_ts",
+                "description": "Copies the timestamp of a message"
+            }
+        ],
+        "slash_commands": [
+            {
+                "command": "/blockkit",
+                "url": "https://example.com",
+                "description": "Send Block Kit formatted message",
+                "usage_hint": "[message]",
+                "should_escape": true
+            }
+        ]
+    },
+    "oauth_config": {
+        "scopes": {
+            "user": [
+                "search:read.public",
+                "search:read.private",
+                "search:read.mpim",
+                "search:read.im",
+                "search:read.files",
+                "search:read.users",
+                "chat:write",
+                "channels:history",
+                "groups:history",
+                "mpim:history",
+                "im:history",
+                "canvases:read",
+                "canvases:write",
+                "users:read",
+                "users:read.email",
+                "reactions:write",
+                "reactions:read",
+                "emoji:read",
+                "files:read",
+                "channels:write",
+                "groups:write",
+                "im:write",
+                "mpim:write",
+                "channels:read",
+                "groups:read",
+                "mpim:read"
+            ],
+            "user_optional": [
+                "search:read.private",
+                "search:read.mpim",
+                "search:read.im",
+                "search:read.files",
+                "chat:write",
+                "groups:history",
+                "mpim:history",
+                "im:history",
+                "canvases:read",
+                "canvases:write"
+            ],
+            "bot": [
+                "commands",
+                "incoming-webhook"
+            ]
+        },
+        "pkce_enabled": false
+    },
+    "settings": {
+        "interactivity": {
+            "is_enabled": true,
+            "request_url": "https://example.com"
+        },
+        "org_deploy_enabled": false,
+        "socket_mode_enabled": false,
+        "token_rotation_enabled": false,
+        "is_mcp_enabled": false
+    }
+}
