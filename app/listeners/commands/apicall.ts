@@ -2,16 +2,12 @@ import type { AllMiddlewareArgs, SlackCommandMiddlewareArgs } from '@slack/bolt'
 import { clearUserAuth } from '../../db/db.js';
 import { requestOauthMessage } from '../oauth.js';
 
-const blockkit = async ({ ack, logger, respond, payload, client, context }: AllMiddlewareArgs & SlackCommandMiddlewareArgs) => {
+const apicall = async ({ ack, logger, respond, payload, client, context }: AllMiddlewareArgs & SlackCommandMiddlewareArgs) => {
   let result;
   try {
     await ack();
 
-    result = await client.reactions.add({
-      token: context.oauthUserToken,
-    });
-
-    await respond('Responding to the sample command!');
+    result = await client.api.test({ error: 'Not yet implemented' });
   } catch (error) {
     logger.error(error);
     if (result?.error === 'token_expired') {
@@ -28,4 +24,4 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
   }
 };
 
-export { blockkit };
+export { apicall };

@@ -17,8 +17,6 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
       blocks,
       token: context.oauthUserToken
     });
-
-    await respond('Responding to the sample command!');
   } catch (error) {
     logger.error(error);
     if (result?.error === 'token_expired') {

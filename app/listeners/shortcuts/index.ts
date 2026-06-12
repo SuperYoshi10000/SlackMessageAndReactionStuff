@@ -1,8 +1,8 @@
 import type { App } from '@slack/bolt';
-import { sampleShortcutCallback } from './sample-shortcut.js';
+import { react_any } from './react_any.js';
 
 const register = (app: App) => {
-  app.shortcut('sample_shortcut_id', sampleShortcutCallback);
+  app.shortcut('react_any', react_any);
 };
 
 export default { register };
