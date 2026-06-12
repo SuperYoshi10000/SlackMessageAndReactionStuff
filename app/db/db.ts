@@ -6,7 +6,7 @@ let client: pg.PoolClient;
 
 export async function init() {
     pool = new pg.Pool({
-
+        connectionString: process.env.POSTGRES_URL
     });
     client = await pool.connect();
 }
