@@ -19,6 +19,7 @@ export async function requireOauth({ payload, client, context, next, ack }: AnyM
 }
 
 export async function requestOauthMessage(client: App['client'], channelId: string, userId: string) {
+    const authUrl = `${process.env.OAUTH_AUTHORIZE_URL}%2F${userId}`; // last param is redirect_uri so this will add it to that
     client.chat.postEphemeral({
         channel: channelId,
         user: userId,
@@ -36,11 +37,11 @@ export async function requestOauthMessage(client: App['client'], channelId: stri
                     "emoji": true
                 },
                 "value": "authorize",
-                "url": process.env.OAUTH_AUTHORIZE_URL,
+                "url": authUrl,
                 "action_id": "authorize",
                 "style": "primary"
             }
         }],
-        text: `Please authorize this app before using its commands:\n${process.env.OAUTH_AUTHORIZE_URL}`
+        text: `Please authorize this app before using its commands:\n${authUrl}`
     });
 }
