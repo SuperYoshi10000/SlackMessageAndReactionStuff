@@ -25,7 +25,7 @@ export async function authorizeUser(slackClient: App['client'], userId: string) 
         client_secret: process.env.SLACK_CLIENT_SECRET!,
         code
     });
-    const res3 = await client.query('INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
+    const res3 = await client.query('DELETE FROM user_oauth WHERE user_id = $1; INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
     return token;
 }
 
