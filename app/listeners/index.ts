@@ -5,10 +5,9 @@ import messages from './messages/index.js';
 import shortcuts from './shortcuts/index.js';
 import views from './views/index.js';
 
-import { authorizeUser } from '../db/db.js';
+import { init } from '../db/db.js';
 import { requireOauth } from './oauth.js';
 
-import pg from 'pg';
 import { App } from '@slack/bolt';
 
 const registerListeners = (app: App) => {
@@ -20,6 +19,7 @@ const registerListeners = (app: App) => {
   views.register(app);
 
   app.use(requireOauth);
+  init();
 };
 
 export default registerListeners;
