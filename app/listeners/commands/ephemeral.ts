@@ -33,7 +33,7 @@ const ephemeral = async ({ ack, logger, respond, payload, client, context }: All
     client.chat.postEphemeral({
       channel: payload.channel_id,
       user: payload.user_id,
-      text: 'Failed to parse block kit JSON or JSON was invalid'
+      text: 'Failed to parse message'
     });
   }
 };
