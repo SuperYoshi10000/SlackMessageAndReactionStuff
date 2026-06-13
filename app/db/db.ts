@@ -36,6 +36,7 @@ export async function authorizeUser(slackClient: App['client'], userId: string) 
         const res3 = await client.query('DELETE FROM user_oauth WHERE user_id = $1; INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
         return token;
     } catch (error) {
+        const res = await client.query('DELETE FROM user_oauth WHERE user_id = $1; INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
         console.error('Error getting oauth token', error);
         return null;
     }
