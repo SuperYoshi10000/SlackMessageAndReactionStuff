@@ -33,10 +33,11 @@ export async function authorizeUser(slackClient: App['client'], userId: string) 
             redirect_uri: `${process.env.OAUTH_REDIRECT_URI}/${userId}`
         });
         console.log('Got token for user:', userId);
-        const res3 = await client.query('DELETE FROM user_oauth WHERE user_id = $1; INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
+        const res3 = await client.query('DELETE FROM user_oauth WHERE user_id = $1', [userId]);
+        const res4 = await client.query('INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
         return token;
     } catch (error) {
-        const res = await client.query('DELETE FROM user_oauth WHERE user_id = $1; INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
+        const res = await client.query('DELETE FROM user_oauth WHERE user_id = $1;', [userId]);
         console.error('Error getting oauth token', error);
         return null;
     }
