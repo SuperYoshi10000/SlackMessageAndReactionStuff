@@ -5,9 +5,11 @@ import registerListeners from './listeners/index.js';
 /** Initialization */
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
-  socketMode: true,
   appToken: process.env.SLACK_APP_TOKEN,
   logLevel: LogLevel.DEBUG,
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  clientId: process.env.SLACK_CLIENT_ID,
+  clientSecret: process.env.SLACK_CLIENT_SECRET,
 });
 
 /** Register Listeners */
