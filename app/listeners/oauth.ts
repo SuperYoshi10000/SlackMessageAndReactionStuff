@@ -5,12 +5,12 @@ export async function requireOauth({ payload, client, context, next, ack }: AnyM
   let userId = (payload as SlashCommand).user_id || '';
   let channelId = (payload as SlashCommand).channel_id || '';
   if (!userId) {
-    ack?.();
+    await ack?.();
     return;
   }
   const token = await authorizeUser(client, userId);
   if (!token) {
-    ack?.();
+    await ack?.();
     requestOauthMessage(client, channelId, userId);
     return;
   }

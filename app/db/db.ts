@@ -1,4 +1,4 @@
-import { App } from '@slack/bolt';
+import { App, Installation, InstallationQuery, InstallationStore } from '@slack/bolt';
 import pg from 'pg';
 
 let pool: pg.Pool;
@@ -36,4 +36,46 @@ export async function authorizeUser(slackClient: App['client'], userId: string) 
 export async function clearUserAuth(userId: string) {
     const res = await client.query('DELETE FROM users WHERE user_id = $1', [userId]);
     return res.rowCount && res.rowCount > 0;
+}
+
+export function getInstallationStore(): InstallationStore {
+    return {
+        storeInstallation: async (installation) => {
+            // Org-wide installation
+            if (installation.isEnterpriseInstall && installation.enterprise !== undefined) {
+                await client.query('INSERT INTO installations (ws_id, installation) VALUES ($1, $2)', [installation.enterprise.id, installation]);
+                return;
+            }
+            // Single team installation
+            if (installation.team !== undefined) {
+                await client.query('INSERT INTO installations (ws_id, installation) VALUES ($1, $2)', [installation.team.id, installation]);
+                return;
+            }
+            throw new Error('Failed saving installation data to installationStore');
+        },
+        fetchInstallation: async (installQuery) => {
+            // Org-wide installation lookup
+            if (installQuery.isEnterpriseInstall && installQuery.enterpriseId !== undefined) {
+                return (await client.query('SELECT * FROM installations WHERE ws_id = $1', [installQuery.enterpriseId])).rows[0]?.installation;
+            }
+            // Single team installation lookup
+            if (installQuery.teamId !== undefined) {
+                return (await client.query('SELECT * FROM installations WHERE ws_id = $1', [installQuery.teamId])).rows[0]?.installation;
+            }
+            throw new Error('Failed fetching installation');
+        },
+        deleteInstallation: async (installQuery) => {
+            // Org-wide installation deletion
+            if (installQuery.isEnterpriseInstall && installQuery.enterpriseId !== undefined) {
+                await client.query('DELETE FROM installations WHERE ws_id = $1', [installQuery.enterpriseId]);
+                return;
+            }
+            // Single team installation deletion
+            if (installQuery.teamId !== undefined) {
+                await client.query('DELETE FROM installations WHERE ws_id = $1', [installQuery.teamId]);
+                return;
+            }
+            throw new Error('Failed to delete installation');
+        },
+    };
 }

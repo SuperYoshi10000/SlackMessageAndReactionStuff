@@ -6,103 +6,114 @@
     },
     "features": {
         "app_home": {
-            "home_tab_enabled": false,
+            "home_tab_enabled": true,
             "messages_tab_enabled": true,
             "messages_tab_read_only_enabled": false
         },
         "bot_user": {
             "display_name": "Message and Reaction Stuff",
-            "always_online": false
+            "always_online": true
         },
         "shortcuts": [
             {
-                "name": "Copy Block Kit",
+                "name": "Copy Special",
                 "type": "message",
-                "callback_id": "copy_blockkit",
-                "description": "Copies the message block kit data"
+                "callback_id": "copy_special",
+                "description": "See and copy more information about a message, like user ID and timestamp"
             },
             {
                 "name": "React with Anything",
                 "type": "message",
                 "callback_id": "react_any",
                 "description": "React with an arbitrary emoji name"
-            },
-            {
-                "name": "Copy and Forward",
-                "type": "message",
-                "callback_id": "copy_forward",
-                "description": "Copies the content of a message and forwards it somewhere else"
-            },
-            {
-                "name": "Copy Timestamp",
-                "type": "message",
-                "callback_id": "copy_ts",
-                "description": "Copies the timestamp of a message"
             }
         ],
         "slash_commands": [
             {
                 "command": "/blockkit",
-                "url": "https://example.com",
+                "url": "https://mk-mrs-bot.mitchk.hackclub.app/slack/events",
                 "description": "Send Block Kit formatted message",
                 "usage_hint": "[message]",
+                "should_escape": true
+            },
+            {
+                "command": "/apicall",
+                "url": "https://mk-mrs-bot.mitchk.hackclub.app/slack/events",
+                "description": "Calls a Slack API as you",
+                "usage_hint": "[method] [body]",
+                "should_escape": false
+            },
+            {
+                "command": "/ephemeral",
+                "url": "https://mk-mrs-bot.mitchk.hackclub.app/slack/events",
+                "description": "Send a temporary (\"Only visible to you\") message to a user",
+                "usage_hint": "@user [message]",
                 "should_escape": true
             }
         ]
     },
     "oauth_config": {
+        "redirect_urls": [
+            "https://mitchk.hackclub.app:44300",
+            "https://app-web.mitchk.hackclub.app"
+        ],
         "scopes": {
             "user": [
-                "search:read.public",
-                "search:read.private",
-                "search:read.mpim",
-                "search:read.im",
-                "search:read.files",
-                "search:read.users",
-                "chat:write",
-                "channels:history",
-                "groups:history",
-                "mpim:history",
-                "im:history",
                 "canvases:read",
                 "canvases:write",
-                "users:read",
-                "users:read.email",
-                "reactions:write",
-                "reactions:read",
+                "channels:history",
+                "channels:read",
+                "channels:write",
+                "chat:write",
                 "emoji:read",
                 "files:read",
-                "channels:write",
-                "groups:write",
-                "im:write",
-                "mpim:write",
-                "channels:read",
+                "groups:history",
                 "groups:read",
-                "mpim:read"
+                "groups:write",
+                "im:history",
+                "im:write",
+                "mpim:history",
+                "mpim:read",
+                "mpim:write",
+                "reactions:read",
+                "reactions:write",
+                "search:read.files",
+                "search:read.im",
+                "search:read.mpim",
+                "search:read.private",
+                "search:read.public",
+                "search:read.users",
+                "users:read",
+                "users:read.email"
             ],
             "user_optional": [
-                "search:read.private",
-                "search:read.mpim",
-                "search:read.im",
-                "search:read.files",
-                "chat:write",
                 "groups:history",
-                "mpim:history",
                 "im:history",
-                "canvases:read",
-                "canvases:write"
+                "mpim:history",
+                "search:read.files",
+                "search:read.im",
+                "search:read.mpim",
+                "search:read.private"
             ],
             "bot": [
                 "commands",
-                "incoming-webhook"
+                "incoming-webhook",
+                "app_mentions:read"
             ]
         },
         "pkce_enabled": false
     },
     "settings": {
+        "event_subscriptions": {
+            "request_url": "https://mk-mrs-bot.mitchk.hackclub.app/slack/events",
+            "bot_events": [
+                "app_home_opened",
+                "app_mention"
+            ]
+        },
         "interactivity": {
             "is_enabled": true,
-            "request_url": "https://example.com"
+            "request_url": "https://mk-mrs-bot.mitchk.hackclub.app/slack/events"
         },
         "org_deploy_enabled": false,
         "socket_mode_enabled": false,
