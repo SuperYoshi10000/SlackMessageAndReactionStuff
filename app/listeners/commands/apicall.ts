@@ -4,8 +4,9 @@ import { requestOauthMessage } from '../oauth.js';
 
 const apicall = async ({ ack, logger, respond, payload, client, context }: AllMiddlewareArgs & SlackCommandMiddlewareArgs) => {
   let result;
+
+  await ack();
   try {
-    await ack();
 
     result = await client.api.test({ error: 'Not yet implemented' });
   } catch (error) {

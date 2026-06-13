@@ -4,8 +4,9 @@ import { requestOauthMessage, requireOauth } from '../oauth.js';
 
 const blockkit = async ({ ack, logger, respond, payload, client, context }: AllMiddlewareArgs & SlackCommandMiddlewareArgs) => {
   let result;
+
+  await ack();
   try {
-    await ack();
 
     let regexResult = payload.text.match(/((?:\d+\.\d+)?)\s*<@([\w]+)(?:\|[\w-. ]+)+>\s?(.*)/);
     let [, timestamp, userId, message = ''] = regexResult || [];
