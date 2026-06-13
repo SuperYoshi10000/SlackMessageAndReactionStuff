@@ -24,13 +24,18 @@ export async function authorizeUser(slackClient: App['client'], userId: string) 
     const res2 = await client.query('SELECT code FROM user_oauth WHERE user_id = $1', [userId]).catch(e => null);
     if (!res2?.rowCount) return null;
     const code = res2.rows[0].code;
-    const token = await slackClient.oauth.v2.access({
-        client_id: process.env.SLACK_CLIENT_ID!,
-        client_secret: process.env.SLACK_CLIENT_SECRET!,
-        code
-    });
-    const res3 = await client.query('DELETE FROM user_oauth WHERE user_id = $1; INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
-    return token;
+    try {
+        const token = await slackClient.oauth.v2.access({
+            client_id: process.env.SLACK_CLIENT_ID!,
+            client_secret: process.env.SLACK_CLIENT_SECRET!,
+            code
+        });
+        const res3 = await client.query('DELETE FROM user_oauth WHERE user_id = $1; INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
+        return token;
+    } catch (error) {
+        console.error('Error getting oauth token', error);
+        return null;
+    }
 }
 
 export async function clearUserAuth(userId: string) {
