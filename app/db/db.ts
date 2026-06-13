@@ -6,7 +6,11 @@ let client: pg.PoolClient;
 
 export async function init() {
     pool = new pg.Pool({
-        connectionString: process.env.POSTGRES_URL
+        user: POSTGRES_USER,
+        password: POSTGRES_PASSWORD,
+        host: POSTGRES_HOST || 'localhost',
+        port: Number(POSTGRES_PORT || 5432),
+        database: POSTGRES_DATABASE
     });
     client = await pool.connect();
 }
