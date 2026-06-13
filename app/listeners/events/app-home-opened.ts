@@ -20,6 +20,13 @@ const appHomeOpenedCallback = async ({
         blocks: [{
             "type": "section",
             "text": {
+              "type": "mrkdwn",
+              "text": "This bot lets you send a message using block kit, or react with any emoji."
+            }
+        },
+          {
+            "type": "section",
+            "text": {
                 "type": "mrkdwn",
                 "text": "Please authorize this app (if you haven't already) before using its commands."
             },
