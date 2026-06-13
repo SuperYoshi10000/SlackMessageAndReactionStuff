@@ -26,12 +26,13 @@ export async function authorizeUser(slackClient: App['client'], userId: string) 
     const code = res2.rows[0].code;
     try {
         console.log('Got code for user:', userId);
-        const token = await slackClient.oauth.v2.access({
+        const oauthAccess = await slackClient.oauth.v2.access({
             client_id: process.env.SLACK_CLIENT_ID!,
             client_secret: process.env.SLACK_CLIENT_SECRET!,
             code,
             redirect_uri: `${process.env.OAUTH_REDIRECT_URI}/${userId}`
         });
+        const token = oauthAccess.access_token;
         console.log('Got token for user:', userId);
         const res3 = await client.query('DELETE FROM user_oauth WHERE user_id = $1', [userId]);
         const res4 = await client.query('INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
