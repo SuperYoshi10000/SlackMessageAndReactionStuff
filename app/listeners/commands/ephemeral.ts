@@ -18,7 +18,8 @@ const ephemeral = async ({ ack, logger, respond, payload, client, context }: All
         channel: payload.channel_id,
         text: message,
         token: context.oauthUserToken,
-        user: userId
+        user: userId,
+        ...(timestamp ? { thread_ts: timestamp } : {})
     });
   } catch (error) {
     logger.error(error);

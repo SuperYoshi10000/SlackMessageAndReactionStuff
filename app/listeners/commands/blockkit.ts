@@ -18,7 +18,8 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
         blocks,
         text: message,
         token: context.oauthUserToken,
-        user: userId
+        user: userId,
+        ...(timestamp ? { thread_ts: timestamp } : {})
       })
     } else {
       result = await client.chat.postMessage({
