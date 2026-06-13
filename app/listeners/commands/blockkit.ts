@@ -34,6 +34,7 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
     }
   } catch (error) {
     logger.error(error);
+    console.error(error);
     if (result?.error === 'token_expired' || result?.error === 'invalid_auth') {
       clearUserAuth(payload.user_id);
       requestOauthMessage(client, payload.channel_id, payload.user_id);
