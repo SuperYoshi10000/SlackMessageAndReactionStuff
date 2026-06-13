@@ -10,6 +10,7 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
 
     let regexResult = payload.text.match(/((?:\d+\.\d+)?)\s*<@([\w]+)(?:\|[\w-. ]+)+>\s?(.*)/);
     let [, timestamp, userId, message = ''] = regexResult || [];
+    console.debug(`Block:`, message);
     let json = JSON.parse(message);
     let blocks = Array.isArray(json) ? json : [json];
 
