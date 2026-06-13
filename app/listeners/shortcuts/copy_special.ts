@@ -1,6 +1,6 @@
 import type { AllMiddlewareArgs, MessageShortcut, SlackShortcutMiddlewareArgs } from '@slack/bolt';
 
-const sampleShortcutCallback = async ({
+const copy_special = async ({
   ack,
   client,
   logger,
@@ -95,4 +95,4 @@ const sampleShortcutCallback = async ({
   }
 };
 
-export { sampleShortcutCallback };
+export { copy_special };

@@ -7,9 +7,8 @@ const ephemeral = async ({ ack, logger, respond, payload, client, context }: All
   try {
     await ack();
 
-    let text = payload.text.replace(/^<[^>]+>/, '');
-    let regexResult = text.match(/<@([\w]+)(?:\|[\w-. ]+)+> ?(.*)/);
-    let [, userId, message = ''] = regexResult || [];
+    let regexResult = payload.text.match(/((?:\d+\.\d+)?)\s*<@([\w]+)(?:\|[\w-. ]+)+>\s?(.*)/);
+    let [, timestamp, userId, message = ''] = regexResult || [];
 
     if (!userId) {
         await respond(`No user specified. Usage: \`/ephemeral @user [message]\``);

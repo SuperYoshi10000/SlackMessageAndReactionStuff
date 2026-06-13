@@ -7,16 +7,16 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
   try {
     await ack();
 
-    let text = payload.text.replace(/^<[^>]+>/, '');
-    let regexResult = text.match(/<@([\w]+)(?:\|[\w-. ]+)+>/);
-    let userId = regexResult?.[1];
-    let json = JSON.parse(text);
+    let regexResult = payload.text.match(/((?:\d+\.\d+)?)\s*<@([\w]+)(?:\|[\w-. ]+)+>\s?(.*)/);
+    let [, timestamp, userId, message = ''] = regexResult || [];
+    let json = JSON.parse(message);
     let blocks = Array.isArray(json) ? json : [json];
 
     if (userId) {
       result = await client.chat.postEphemeral({
         channel: payload.channel_id,
         blocks,
+        text: message,
         token: context.oauthUserToken,
         user: userId
       })
@@ -24,7 +24,9 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
       result = await client.chat.postMessage({
         channel: payload.channel_id,
         blocks,
-        token: context.oauthUserToken
+        text: message,
+        token: context.oauthUserToken,
+        ...(timestamp ? { thread_ts: timestamp } : {})
       });
     }
   } catch (error) {
