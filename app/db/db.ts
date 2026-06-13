@@ -29,7 +29,7 @@ export async function authorizeUser(slackClient: App['client'], userId: string) 
             client_id: process.env.SLACK_CLIENT_ID!,
             client_secret: process.env.SLACK_CLIENT_SECRET!,
             code,
-            redirect_uri: `${process.env.OAUTH_AUTHORIZE_URL}%2F${userId}`
+            redirect_uri: `${process.env.OAUTH_AUTHORIZE_URL}/${userId}`
         });
         const res3 = await client.query('DELETE FROM user_oauth WHERE user_id = $1; INSERT INTO users (user_id, token) VALUES ($1, $2)', [userId, token]);
         return token;
