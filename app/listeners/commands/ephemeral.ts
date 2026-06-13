@@ -2,31 +2,25 @@ import type { AllMiddlewareArgs, SlackCommandMiddlewareArgs } from '@slack/bolt'
 import { clearUserAuth } from '../../db/db.js';
 import { requestOauthMessage, requireOauth } from '../oauth.js';
 
-const blockkit = async ({ ack, logger, respond, payload, client, context }: AllMiddlewareArgs & SlackCommandMiddlewareArgs) => {
+const ephemeral = async ({ ack, logger, respond, payload, client, context }: AllMiddlewareArgs & SlackCommandMiddlewareArgs) => {
   let result;
   try {
     await ack();
 
     let text = payload.text.replace(/^<[^>]+>/, '');
-    let regexResult = text.match(/<@([\w]+)(?:\|[\w-. ]+)+>/);
-    let userId = regexResult?.[1];
-    let json = JSON.parse(text);
-    let blocks = Array.isArray(json) ? json : [json];
+    let regexResult = text.match(/<@([\w]+)(?:\|[\w-. ]+)+> ?(.*)/);
+    let [, userId, message = ''] = regexResult || [];
 
-    if (userId) {
-      result = await client.chat.postEphemeral({
+    if (!userId) {
+        await respond(`No user specified. Usage: \`/ephemeral @user [message]\``);
+        return;
+    }
+    result = await client.chat.postEphemeral({
         channel: payload.channel_id,
-        blocks,
+        text: message,
         token: context.oauthUserToken,
         user: userId
-      })
-    } else {
-      result = await client.chat.postMessage({
-        channel: payload.channel_id,
-        blocks,
-        token: context.oauthUserToken
-      });
-    }
+    });
   } catch (error) {
     logger.error(error);
     if (result?.error === 'token_expired') {
@@ -43,4 +37,4 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
   }
 };
 
-export { blockkit };
+export { ephemeral };
