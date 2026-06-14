@@ -3,6 +3,7 @@ import { blockkit } from './blockkit.js';
 import { ephemeral } from './ephemeral.js';
 import { oauth } from './oauth.js';
 import { sendmessage } from './sendmessage.js';
+import { addreaction } from './addreaction.js';
 
 const register = (app: App) => {
   app.command('/blockkit', blockkit);
@@ -11,7 +12,7 @@ const register = (app: App) => {
   app.command('/mk-mrs-bot-oauth', oauth);
   app.command('/sendmessage', sendmessage);
   app.command('/sendmessage-raw', sendmessage); // Sends non-escaped, but handled the same way (allows channel pings and user mentions by ID)
-
+  app.command('/addreaction', addreaction);
 };
 
 export default { register };
