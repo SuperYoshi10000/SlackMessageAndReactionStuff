@@ -25,7 +25,7 @@ const sendmessage = async ({ ack, logger, respond, payload, client, context }: A
       return;
     }
 
-    let regexResult = payload.text.match(/^([\d+\.]+)?\s*(?:<@([\w]+)(?:\|[\w\-. ]+)?>)?\s+(\w+|\.)\s+(.*)/s);
+    let regexResult = payload.text.match(/^([\d+\.]+)?\s*(?:<@([\w]+)(?:\|[\w\-. ]+)?>)?\s*(\w+|\.)\s+(.*)/s);
     let [, timestamp, userId, type, message = ''] = regexResult || [];
     console.log('/sendmessage - timestamp:', timestamp, 'userId:', userId, 'message:', message, '(original:', payload.text, 'regexResult:', regexResult, ')');
     
