@@ -84,6 +84,16 @@ function parseMessage(type: string, text: string): string | KnownBlock | (Block 
                 type: 'markdown',
                 text
             }
+        case 'mds':
+        case 'sec':
+        case 'section':
+            return {
+                type: "section",
+                text: {
+                    type: "mrkdwn",
+                    text: text
+                }
+            }
         case 'block':
         case 'blocks':
         case 'blockkit':
