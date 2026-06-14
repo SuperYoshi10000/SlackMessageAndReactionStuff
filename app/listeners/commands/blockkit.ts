@@ -12,7 +12,11 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
       let regexResult = payload.text.match(/^edit\s+([\d+\.]+)\s?(.*)/s);
       let [, timestamp, message = ''] = regexResult || [];
       let json = JSON.parse(message);
-      let blocks = Array.isArray(json) ? json : [json];
+      let blocks: any[] | undefined = Array.isArray(json) ? json : [json];
+      if (typeof json !== 'object') {
+        blocks = undefined;
+        message = json;
+      }
 
       result = await client.chat.update({
         channel: payload.channel_id,
@@ -28,7 +32,11 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
     let [, timestamp, userId, message = ''] = regexResult || [];
     console.log('/blockkit - timestamp:', timestamp, 'userId:', userId, 'message:', message, '(original:', payload.text, 'regexResult:', regexResult, ')');
     let json = JSON.parse(message);
-    let blocks = Array.isArray(json) ? json : [json];
+    let blocks: any[] | undefined = Array.isArray(json) ? json : [json];
+    if (typeof json !== 'object') {
+      blocks = undefined;
+      message = json;
+    }
 
     if (userId) {
       result = await client.chat.postEphemeral({
