@@ -9,7 +9,8 @@ const addreaction = async ({ ack, logger, respond, payload, client, context }: A
     await Promise.all(reactions.map(reaction => client.reactions.add({
         channel: payload.channel_id,
         timestamp,
-        name: reaction.replace(/^:|:$/g, '')
+        name: reaction.replace(/^:|:$/g, ''),
+        token: context.oauthUserToken
     }).catch(error => client.chat.postEphemeral({
         channel: payload.channel_id,
         user: payload.user_id,
