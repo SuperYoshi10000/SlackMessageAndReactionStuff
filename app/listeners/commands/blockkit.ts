@@ -8,6 +8,22 @@ const blockkit = async ({ ack, logger, respond, payload, client, context }: AllM
   await ack();
   try {
 
+    if (payload.text.startsWith('edit')) {
+      let regexResult = payload.text.match(/^edit\s+([\d+\.]+)\s?(.*)/s);
+      let [, timestamp, message = ''] = regexResult || [];
+      let json = JSON.parse(message);
+      let blocks = Array.isArray(json) ? json : [json];
+
+      result = await client.chat.update({
+        channel: payload.channel_id,
+        blocks,
+        text: message,
+        token: context.oauthUserToken,
+        ts: timestamp
+      });
+      return;
+    }
+
     let regexResult = payload.text.match(/^([\d+\.]+)?\s*(?:<@([\w]+)(?:\|[\w\-. ]+)?>)?\s?(.*)/s);
     let [, timestamp, userId, message = ''] = regexResult || [];
     console.log('/blockkit - timestamp:', timestamp, 'userId:', userId, 'message:', message, '(original:', payload.text, 'regexResult:', regexResult, ')');
